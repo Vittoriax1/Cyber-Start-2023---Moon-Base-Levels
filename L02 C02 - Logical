@@ -1,0 +1,15 @@
+# CHALLENGE 1: Print the result of true or true.
+print(True or True)
+
+# CHALLENGE 2: Print the result of true or false.
+print(True or False)
+
+# CHALLENGE 3: Print the result of false or true.
+print(False or True)
+
+# CHALLENGE 4: Print the result of false or false.
+print(False or False)
+
+# CHALLENGE 5: Use not to negate the result of true OR false and
+# print the result.
+print(not(True or False))
