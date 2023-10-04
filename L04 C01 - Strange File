@@ -1,0 +1,15 @@
+#
+# Ok, quick task for you agent - we've received a strange file from
+# the first alien communication.
+# It's at /tmp/alien-signal.txt, we need you to open and read the file.
+#
+#
+# Define the file path
+file_path = "/tmp/alien-signal.txt"
+
+# Open and read the file
+with open(file_path, "r") as file:
+	signal_contents = file.read()
+  # Print the contents of the file
+  
+print(signal_contents)
