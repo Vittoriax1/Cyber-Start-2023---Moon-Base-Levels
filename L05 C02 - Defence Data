@@ -1,0 +1,24 @@
+# Generate a valid xml file at /tmp/vulnerable-countries.xml.
+# It should contain a list of country nodes attached to a root node.
+# Each country node should have a name attribute.
+# The third node name should be Panama.
+#
+import xml.etree.ElementTree as ET
+
+# Create the root element
+root = ET.Element("root")
+
+# List of countries
+countries = ["Country1", "Country2", "Panama", "Country4", "Country5"]
+
+# Create country nodes with name attributes and add them to the root
+for country_name in countries:
+    country = ET.Element("country")
+    country.set("name", country_name)
+    root.append(country)
+
+# Create an ElementTree object
+tree = ET.ElementTree(root)
+
+# Write the XML to the specified file
+tree.write("/tmp/vulnerable-countries.xml")
