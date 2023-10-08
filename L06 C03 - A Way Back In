@@ -1,0 +1,35 @@
+#
+# Write a script that connects to 'localhost' port 10000
+# You then need to send a command to list the files in the /tmp directory
+#
+
+import socket
+
+# Define the remote server's IP address and port
+server_ip = "127.0.0.1"  # Replace with the actual IP address
+server_port = 10000  # Replace with the actual port number
+
+# Create a socket object
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+try:
+    # Connect to the remote server
+    client_socket.connect((server_ip, server_port))
+
+    # Now, you can send and receive data over the socket connection
+    # For example, you can send a command:
+    command = "ls /tmp\n"
+    client_socket.send(command.encode('utf-8'))
+
+    # Receive and print the response
+    response = client_socket.recv(1024).decode('utf-8')
+    print("Response from server:")
+    print(response)
+
+    # Close the socket when done
+    client_socket.close()
+
+except ConnectionRefusedError:
+    print("Connection refused. Make sure the server is running.")
+except Exception as e:
+    print(f"An error occurred: {e}")
