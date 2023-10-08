@@ -1,0 +1,43 @@
+#
+# Send server ('localhost', 10000) GET_KEY to retrieve key,
+# user needs to reverse and send back to server to get flag.
+# It will change each execution so the
+# user can not manually achieve this.
+#
+
+import socket
+
+# Server address and port
+server_address = ('localhost', 10000)
+
+# Create a socket
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+
+try:
+    # Connect to the server
+    client_socket.connect(server_address)
+
+    # Send the GET_KEY request
+    client_socket.send(b'GET_KEY')
+
+    # Receive the key from the server
+    key = client_socket.recv(1024).decode('utf-8').strip()
+
+    # Reverse the key
+    reversed_key = key[::-1]
+
+    # Send the reversed key back to the server
+    client_socket.send(reversed_key.encode('utf-8'))
+
+    # Receive the flag from the server
+    flag = client_socket.recv(1024).decode('utf-8').strip()
+    print(f"Flag: {flag}")
+
+except ConnectionRefusedError:
+    print("Connection refused. Make sure the server is running.")
+except Exception as e:
+    print(f"An error occurred: {e}")
+
+finally:
+    # Close the socket
+    client_socket.close()
