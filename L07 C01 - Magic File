@@ -1,0 +1,28 @@
+#
+# Find the valid png file in the /tmp directory using magic bytes.
+# The code is hidden in this file.
+#
+import os
+
+# Directory where the PNG files are located
+directory = '/tmp'
+
+# Iterate through files in the directory
+for filename in os.listdir(directory):
+    file_path = os.path.join(directory, filename)
+
+    # Open the file in binary mode and read the first 8 bytes
+    with open(file_path, 'rb') as file:
+        file_header = file.read(8)
+
+    # Check if the first 8 bytes match the PNG signature
+    if file_header == b'\x89PNG\r\n\x1a\n':
+        print(f"Valid PNG file found: {file_path}")
+
+        # Now you can read and print the contents of the valid PNG file as binary
+        with open(file_path, 'rb') as valid_png_file:
+            flag_content = valid_png_file.read()
+            print(f"Flag content (binary data): {flag_content}")
+
+        # Break out of the loop since we found the valid PNG file
+        break
