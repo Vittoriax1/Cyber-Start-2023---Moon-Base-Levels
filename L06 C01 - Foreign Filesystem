@@ -1,0 +1,19 @@
+#
+# Find the file in the alien directories in /tmp/aliendir to get the flag
+#
+
+import os
+
+# Define the directory path
+directory_path = "/tmp/aliendir"
+
+try:
+    # Iterate through the contents of the directory
+    for dirpath, dirnames, filenames in os.walk(directory_path):
+        for filename in filenames:
+            # Print the name of the file (the flag)
+            print(f"Found flag: {filename}")
+            # Assuming you want to stop after finding one file, you can break the loop here
+            break
+except Exception as e:
+    print(f"Error: {e}")
