@@ -1,0 +1,34 @@
+#
+# Hide text in the image /tmp/image.gif
+# Append the word alieneye to end of the file.
+#
+
+import struct
+
+# Text to hide
+text_to_hide = "alieneye"
+
+# Image file path
+image_path = "/tmp/image.gif"
+
+# Read the image data
+with open(image_path, "rb") as image_file:
+    image_data = image_file.read()
+
+# Encode the text as bytes
+text_bytes = text_to_hide.encode("utf-8")
+
+# Get the length of the text
+text_length = len(text_bytes)
+
+# Embed the text length in the first 4 bytes of the image data
+image_data = struct.pack("<I", text_length) + image_data
+
+# Append the text bytes to the image data
+image_data += text_bytes
+
+# Write the modified image data back to the image file
+with open(image_path, "wb") as image_file:
+    image_file.write(image_data)
+
+print("Text hidden in the image.")
