@@ -1,0 +1,39 @@
+#
+# Connect to alien server ('localhost', 10000)
+#
+# Then send each of these values...
+# USER
+# aliensignal
+# PASS
+# unlockserver
+# SEND
+# moonbase
+# END
+# ...and receive the response from each.
+#
+# Note: You must receive data back from the server after you send each value
+#
+import socket
+
+# Define the server address and port
+server_address = ('localhost', 10000)
+
+# Define the list of values to send
+values_to_send = ["USER", "aliensignal", "PASS", "unlockserver", "SEND", "moonbase", "END"]
+
+try:
+    # Create a socket connection to the server
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.connect(server_address)
+
+        for value in values_to_send:
+            # Send the value to the server
+            s.sendall(value.encode())
+
+            # Receive and print the response from the server
+            response = s.recv(1024).decode()
+            print(f"Received response for '{value}': {response}")
+
+except Exception as e:
+    print(f"Error: {e}")
+    sys.exit(1)
