@@ -1,0 +1,44 @@
+#
+# The Tweet Bot API can be found at http://127.0.0.1:8082
+#
+# GET method sent to that URL:
+# ...returns basic info about API
+#
+# POST method sent to that URL, with:
+# - x-api-key:{KEY} in header
+# - user={USER} in querystring
+# - status-update={TEXT} in querystring
+# ...creates a new social media post
+import urllib.request
+import urllib.parse
+
+# API endpoint URL
+api_url = "http://127.0.0.1:8082"
+
+# Headers for the POST request
+headers = {
+    "x-api-key": "tweetbotkeyv1"  # Use the provided API key
+}
+
+# Query parameters for the POST request
+params = {
+    "user": "tweetbotuser",          # User
+    "status-update": "alientest"    # Status Update
+}
+
+# Encode the query parameters
+encoded_params = urllib.parse.urlencode(params).encode('utf-8')
+
+# Create a POST request
+request = urllib.request.Request(api_url, data=encoded_params, headers=headers)
+
+try:
+    # Send the POST request to create a social media post
+    with urllib.request.urlopen(request) as response:
+        response_data = response.read().decode('utf-8')
+        print("Social media post created successfully.")
+        print("Response Data:")
+        print(response_data)
+
+except Exception as e:
+    print(f"Request error: {e}")
