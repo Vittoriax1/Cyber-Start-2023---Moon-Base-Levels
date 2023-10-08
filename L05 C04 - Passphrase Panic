@@ -1,0 +1,35 @@
+#
+# Write a script to generate a passphrase by taking words from
+# /tmp/words.txt
+# The wordNumbers array holds three random numbers. Each number
+# corresponds to a word in words.txt. So for example
+# wordNumbers[1] is the second word in /tmp/words.txt.
+# Put a space between each word and print it out
+#
+
+
+# Load the randomly generated word numbers from /tmp/randomwordsnumbers.txt
+with open("/tmp/randomwordsnumbers.txt", "r") as file:
+    data = file.read()
+
+wordNumbers = data.rstrip().split("\n")
+
+# Initialize an empty list to store selected words
+selected_words = []
+
+# Open the words file and read lines
+with open("/tmp/words.txt", "r") as words_file:
+    lines = words_file.readlines()
+
+# Extract words using the word numbers from wordNumbers and add them to the selected_words list
+for word_number in wordNumbers:
+    index = int(word_number)  # Convert the word number to an integer
+    if 0 <= index < len(lines):
+        word = lines[index].strip()  # Subtract 1 to account for 0-based indexing
+        selected_words.append(word)
+
+# Create the passphrase by joining the selected words with spaces
+passphrase = " ".join(selected_words)
+
+# Print the generated passphrase
+print(passphrase)
