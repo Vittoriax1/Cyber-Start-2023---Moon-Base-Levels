@@ -1,0 +1,45 @@
+#
+# Sample Alien Zip file found at /tmp/alien-zip-2092.zip is password protected
+# We have worked out they are using three digit code
+# Brute force the Zip file to extract to /tmp
+#
+# Note: The script can timeout if this occurs try narrowing
+# down your search
+import zipfile
+
+# Define the path to the zip file and the target text file
+zip_file_path = "/tmp/alien-zip-2092.zip"
+target_text_file = "alien-zip-2092.txt"  # We assume the text file has the same name as the zip
+
+# Define the range of three-digit passcodes (000 to 999)
+passcode_range = range(1000)
+
+# Iterate through all possible passcodes
+for passcode in passcode_range:
+    # Convert the passcode to a string with leading zeros
+    passcode_str = str(passcode).zfill(3)
+
+    try:
+        # Attempt to extract the zip file with the current passcode
+        with zipfile.ZipFile(zip_file_path, "r") as zip_file:
+            zip_file.extractall("/tmp", pwd=passcode_str.encode())
+
+        # If extraction is successful, break out of the loop
+        print(f"Successfully extracted with passcode: {passcode_str}")
+        break
+
+    except Exception as e:
+        # Ignore any exceptions and continue trying other passcodes
+        pass
+
+# Read and print the contents of the extracted text file
+try:
+    with open(f"/tmp/{target_text_file}", "r") as text_file:
+        text_contents = text_file.read()
+        print("Contents of the extracted text file:")
+        print(text_contents)
+
+except FileNotFoundError:
+    print(f"Text file '{target_text_file}' not found.")
+except Exception as e:
+    print(f"Error reading the text file: {e}")
