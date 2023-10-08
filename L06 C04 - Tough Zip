@@ -1,0 +1,73 @@
+#
+# Zip file found at /tmp/alien-sample-42.zip is password protected
+# We have worked out they are using one of the passwords
+# in the provided list
+# Brute force the Zip file to extract to /tmp
+#
+# Note: The script can timeout. If this occurs try narrowing
+# down your search
+#
+import zipfile
+import os
+
+# Path to the zip file
+zip_file_path = "/tmp/alien-sample-42.zip"
+
+# Directory to extract the file to
+output_directory = "/tmp"
+
+# Flag to indicate whether the correct password was found
+correct_password_found = False
+
+# List of potential passwords
+possible_passwords = [
+    'pant', 'papa', 'paps', 'para', 'path', 'pats', 'paty',
+    'pard', 'pare', 'park', 'parr', 'pars', 'part', 'pase',
+    'pash', 'past', 'pate', 'peal', 'pean', 'pear', 'peas',
+    'pave', 'pawl', 'pawn', 'paws', 'pays', 'peag', 'peak',
+    'peck', 'pele', 'peat', 'pech', 'peke', 'perm', 'perp',
+    'pecs', 'peds', 'peed', 'peek', 'peel', 'peen', 'peep',
+    'pelf', 'pelt', 'pend', 'pens', 'pent', 'pass', 'pepo',
+    'pert', 'phon', 'phot', 'phut', 'peer', 'pegs', 'pehs',
+    'pere', 'peri', 'perk', 'phat', 'phew', 'phis', 'phiz',
+    'perv', 'peso', 'pest', 'pets', 'pews', 'pfft', 'pfui',
+    'pial', 'pian', 'pias', 'pica', 'pice', 'pick', 'pics',
+    'pied', 'pier', 'pies', 'pigs', 'plan', 'plat', 'ploy',
+    'pika', 'pike', 'piki', 'pint', 'piny', 'pion', 'pith',
+    'pile', 'pili', 'pill', 'pily', 'pima', 'pimp', 'pina',
+    'pine', 'ping', 'pink', 'pins', 'plug', 'plum', 'pein',
+    'poll', 'peps', 'pits', 'pity', 'pixy', 'plop', 'plot',
+    'pipe', 'pips', 'pipy', 'pirn', 'pish', 'piso', 'pita',
+    'pole', 'plow', 'plod', 'pois', 'poke', 'poky',
+    'play', 'plea', 'pleb', 'pled', 'plew', 'plex', 'plie',
+    'plus', 'pock', 'poco', 'pods', 'poem', 'poet', 'pogy',
+]
+
+# Attempt to extract the file with each potential password
+for password in possible_passwords:
+    try:
+        # Open the zip file with the current password
+        with zipfile.ZipFile(zip_file_path, 'r') as zip_file:
+            zip_file.extractall(output_directory, pwd=password.encode('utf-8'))
+        
+        # If extraction was successful, set the flag to True and break out of the loop
+        correct_password_found = True
+        print(f"Successfully extracted using password: {password}")
+        break
+
+    except zipfile.BadZipFile:
+        print(f"Bad zip file: {zip_file_path}")
+        break
+    except RuntimeError as e:
+        # Incorrect password, continue to the next one
+        print(f"Failed with password: {password}")
+
+if correct_password_found:
+    # The file has been successfully extracted
+    extracted_file_path = os.path.join(output_directory, "alien-sample-42.txt")
+    with open(extracted_file_path, 'r') as extracted_file:
+        flag_content = extracted_file.read()
+        print(f"Flag content: {flag_content}")
+
+else:
+    print("Password not found in the list of potential passwords.")
