@@ -1,0 +1,56 @@
+#
+# The aliens seem to be trying to make direct contact, so it's time
+# for us to properly listen.
+# Write a server that listens on ('localhost', 10000).
+# The flag will be sent to that address.
+# Record signal to /tmp/aliensignallog.txt
+#
+# If you get an address already in use error then try again in a few
+# moments.
+#
+
+import socket
+
+def main():
+    # Define the server address and port
+    server_address = ('localhost', 10000)
+
+    # Create a socket to listen for incoming connections
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
+        # Bind the server socket to the specified address and port
+        server_socket.bind(server_address)
+
+        # Listen for incoming connections
+        server_socket.listen()
+
+        print("Server is listening on", server_address)
+
+        while True:
+            # Accept incoming connection
+            client_socket, client_address = server_socket.accept()
+
+            try:
+                print("Connection from:", client_address)
+
+                # Receive data from the client
+                data = client_socket.recv(1024).decode()
+
+                if data:
+                    # Print the received data
+                    print("Received data:", data)
+
+                    # Write the received data to /tmp/aliensignallog.txt
+                    with open("/tmp/aliensignallog.txt", "a") as log_file:
+                        log_file.write(data + "\n")
+                else:
+                    print("No data received")
+
+            except Exception as e:
+                print("Error:", e)
+
+            finally:
+                # Close the client socket
+                client_socket.close()
+
+if __name__ == "__main__":
+    main()
