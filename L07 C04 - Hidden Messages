@@ -1,0 +1,28 @@
+#
+# One of the agents has intercepted a file from the aliens
+# The flag is hidden in large amount of non alphanumeric characters.
+# The file lives at /tmp/destroymoonbase.gif
+#
+import re
+
+file_path = '/tmp/destroymoonbase.gif'
+
+# Function to remove non-alphanumeric characters from a string
+def remove_non_alphanumeric(input_str):
+    return re.sub(r'[^A-Za-z0-9]', '', input_str)
+
+try:
+    with open(file_path, 'r') as file:
+        content = file.read()
+
+    stripped_content = remove_non_alphanumeric(content)
+
+    # Print the stripped content
+    print(stripped_content)
+
+    if 'flag' in stripped_content:
+        print("Flag found!")
+except FileNotFoundError:
+    print(f"File {file_path} not found.")
+except Exception as e:
+    print(f"An error occurred: {e}")
