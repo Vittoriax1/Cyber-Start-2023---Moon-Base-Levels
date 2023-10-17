@@ -1,0 +1,55 @@
+#
+# Setup server listening on ('localhost', 10000)
+# receive data then send data back after XORing with the key
+# attackthehumans
+#
+# If you get an address already in use error then try again in a few
+# moments.
+#
+
+import socket
+
+def xor_encrypt(message, key):
+    encrypted = ""
+    key_length = len(key)
+    for i in range(len(message)):
+        char = message[i]
+        key_char = key[i % key_length]
+        encrypted += chr(ord(char) ^ ord(key_char))
+    return encrypted
+
+def main():
+    host = '127.0.0.1'
+    port = 10000
+    key = "attackthehumans"
+
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.bind((host, port))
+    server.listen(1)
+    print(f"Server listening on {host}:{port}")
+
+    while True:
+        client, addr = server.accept()
+        print(f"Connection from {addr}")
+
+        data = client.recv(1024).decode()
+        print(f"Received data: {data}")
+
+        # Perform XOR encryption with the key
+        encrypted_data = xor_encrypt(data, key)
+
+        # Send the encrypted data back to the aliens
+        client.send(encrypted_data.encode())
+        print(f"Sent encrypted data: {encrypted_data}")
+
+        response = client.recv(1024).decode()
+        print(f"Received response: {response}")
+
+        if 'flag' in response:
+            print("Flag found:")
+            print(response)
+
+        client.close()
+
+if __name__ == "__main__":
+    main()
